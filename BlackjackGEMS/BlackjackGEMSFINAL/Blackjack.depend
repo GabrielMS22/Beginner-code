@@ -1,0 +1,26 @@
+# depslib dependency file v1.0
+1476772844 source:c:\users\gabriel-lp\desktop\uabc\4to semestre\algoritmos y e.d\blackjackallegro\blackjackdep\blackjack\blackjack\main.c
+	<allegro.h>
+	<stdlib.h>
+	<conio.h>
+	<stdio.h>
+
+1476934313 source:c:\users\gabriel-lp\desktop\uabc\4to semestre\algoritmos y e.d\blackjackallegro\blackjackdep\blackjack\blackjack\main.cpp
+	<allegro.h>
+	<stdlib.h>
+	<conio.h>
+	<stdio.h>
+
+1476944913 source:c:\users\gabriel-lp\desktop\uabc\4to semestre\algoritmos y e.d\blackjackgems\blackjackfinal\main.cpp
+	<allegro.h>
+	<stdlib.h>
+	<conio.h>
+	<stdio.h>
+
+1477067952 source:c:\users\gabriel-lp\desktop\uabc\4to semestre\algoritmos y e.d\blackjackgems\blackjackgemsfinal\main.cpp
+	<allegro.h>
+	<stdlib.h>
+	<conio.h>
+	<stdio.h>
+	<time.h>
+

@@ -1,0 +1,359 @@
+#include <allegro.h>
+
+    BITMAP *buffer;
+	BITMAP *fondo0;
+	BITMAP *fondo0b;
+	BITMAP *fondo1;
+	BITMAP *cursor;
+	BITMAP *feliz;
+    BITMAP *fin;
+    BITMAP *ganar;
+
+
+
+ MIDI *musica1  = load_midi("intro.mid");
+
+
+void niveles ();
+void perder (SAMPLE *mal);
+void gameover (BITMAP *buffer);
+
+
+void gameover(BITMAP *buffer){
+
+
+    if ( mouse_x > 0 && mouse_x < 800 &&
+         mouse_y > 0 && mouse_y < 621)
+         {
+
+
+         blit(fin, buffer, 0, 0, 0, 0, 800, 621);
+         rest(200);
+
+
+     }
+}
+
+
+
+void perder(SAMPLE *mal)
+    {
+
+        play_sample(mal,200,150,1000,0);
+
+
+    }
+int main()
+{
+
+
+	allegro_init();
+	install_keyboard();
+	install_mouse();
+    install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, NULL);
+
+	set_color_depth(32);
+	set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 621, 0, 0);
+
+
+
+
+
+
+
+while (!key[KEY_ESC])
+    {
+        niveles();
+    }
+
+
+}
+void niveles (){
+
+
+    SAMPLE *bien = load_wav("bien.wav");
+	SAMPLE *mal = load_wav("mal.wav");
+
+BITMAP *buffer = create_bitmap(800, 621);
+FONT *sim = load_font("fuente.PCX", NULL, NULL);
+FONT *op = load_font ("fuenteop.PCX",NULL,NULL);
+FONT *cali= load_font("cal.PCX",NULL,NULL);
+fondo0= load_bitmap ("simp0a.bmp",NULL);
+fondo0b = load_bitmap ("simp0b.bmp",NULL);
+cursor = load_bitmap("cursor.bmp",NULL);
+
+int bandera,nivel=1,vidas,cal;
+
+bool salida = false;
+bool finjuego= false;
+
+if ( mouse_x > 0 && mouse_x < 800 &&
+              mouse_y > 0 && mouse_y < 621)
+         {
+
+              //  play_midi(musica1,10);
+         }
+
+
+if(vidas>0)
+{
+
+
+        cal=100;
+        vidas=5;
+
+while ( !salida )
+	{
+
+         if ( mouse_x > 99 && mouse_x < 598 &&
+              mouse_y > 441 && mouse_y < 491)
+         {
+            blit(fondo0b, buffer, 0, 0, 0, 0, 800, 621);
+
+            if ( mouse_b & 1 )
+            {
+                  salida = true;
+
+            }
+         }else{
+
+            blit(fondo0, buffer, 0, 0, 0, 0, 800, 621);
+         }
+
+         masked_blit(cursor, buffer, 0, 0, mouse_x, mouse_y, 46,48);
+
+	     blit(buffer, screen, 0, 0, 0, 0, 800, 621);
+
+
+    }
+    salida = false;
+    finjuego= false;
+
+    destroy_bitmap(fondo0);
+    destroy_bitmap(fondo0b);
+	fondo1 = load_bitmap("sim1.bmp",NULL);
+	fin = load_bitmap("fin.bmp",NULL);
+
+
+	while( !salida )
+	{
+
+
+
+         if ( mouse_x > 250 && mouse_x < 350 &&
+              mouse_y > 453 && mouse_y < 505)
+         {
+            blit(fondo1, buffer, 0, 0, 0, 0, 800, 621);
+            textprintf_ex(fondo1, op, 250, 446, makecol(255,255,128), -1, "x=1");
+            if ( mouse_b & 1 )
+            {
+                perder(mal);
+                vidas--;
+                cal--;
+                  salida = false;
+                  rest(70);
+            }
+
+         }
+         else  if ( mouse_x > 387 && mouse_x < 480 &&
+              mouse_y > 453 && mouse_y < 505)
+         {
+            blit(fondo1, buffer, 0, 0, 0, 0, 800, 621);
+            textprintf_ex(fondo1, op, 387, 446, makecol(255,255,128), -1, "x=2");
+            if ( mouse_b & 1 )
+            {
+                vidas--;
+                cal--;
+                perder(mal);
+                salida = false;
+                rest(100);
+            }
+
+
+         }else  if ( mouse_x > 534 && mouse_x < 613 &&
+              mouse_y > 453 && mouse_y < 505)
+         {
+            blit(fondo1, buffer, 0, 0, 0, 0, 800, 621);
+            textprintf_ex(fondo1, op, 534, 446, makecol(255,255,128), -1, "x=3");
+            if ( mouse_b & 1 )
+            {
+
+                  salida = true;
+                  rest(100);
+
+            }
+
+
+         }
+         if (vidas==0)
+         {
+
+             gameover(buffer);
+
+         }
+
+
+         else{
+            blit(fondo1, buffer, 0, 0, 0, 0, 800, 621);
+         }
+            textprintf_ex(buffer, sim, 70, 555, makecol(255,255,255), -1, "Nivel : %d Vidas: %d",nivel,vidas);
+            textprintf_ex(buffer, cali, 205, 153, makecol(255,255,255), -1, "Calificacion: %d",cal);
+            textprintf_ex(fondo1, op, 334, 265, makecol(255,255,255), -1, "5x+3=18");
+            textprintf_ex(fondo1, op, 250, 446, makecol(255,255,255), -1, "x=1");
+            textprintf_ex(fondo1, op, 387, 446, makecol(255,255,255), -1, "x=2");
+            textprintf_ex(fondo1, op, 534, 446, makecol(255,255,255), -1, "x=3");
+
+         masked_blit(cursor, buffer, 0, 0, mouse_x, mouse_y, 46,48);
+
+	     blit(buffer, screen, 0, 0, 0, 0, 800, 621);
+
+
+    }
+
+       salida=false;
+       destroy_bitmap(fondo1);
+
+       feliz = load_bitmap ("felicidad.bmp",NULL);
+
+while ( !salida )
+	{
+         if ( mouse_x > 0 && mouse_x < 800 &&
+              mouse_y > 0 && mouse_y < 621)
+         {
+            blit(feliz, buffer, 0, 0, 0, 0, 800, 621);
+
+            if ( mouse_b & 1 )
+            {
+                  salida = true;
+
+            }
+         }else{
+            blit(feliz, buffer, 0, 0, 0, 0, 800, 621);
+         }
+
+         masked_blit(cursor, buffer, 0, 0, mouse_x, mouse_y, 46,48);
+
+	     blit(buffer, screen, 0, 0, 0, 0, 800, 621);
+
+
+
+    }
+
+       salida=false;
+       destroy_bitmap(feliz);
+       feliz = load_bitmap ("felicidad.bmp",NULL);
+       fondo1 = load_bitmap("sim1.bmp",NULL);
+        nivel++;
+
+while( !salida)
+	{
+
+         if ( mouse_x > 250 && mouse_x < 350 &&
+              mouse_y > 453 && mouse_y < 505)
+         {
+            blit(fondo1, buffer, 0, 0, 0, 0, 800, 621);
+            textprintf_ex(fondo1, op, 250, 446, makecol(255,255,128), -1, "x=5");
+            if ( mouse_b & 1 )
+            {
+                 salida = true;
+                  rest(100);
+
+            }
+
+         }
+         else  if ( mouse_x > 387 && mouse_x < 480 &&
+              mouse_y > 453 && mouse_y < 505)
+         {
+            blit(fondo1, buffer, 0, 0, 0, 0, 800, 621);
+            textprintf_ex(fondo1, op, 387, 446, makecol(255,255,128), -1, "x=2");
+            if ( mouse_b & 1 )
+            {
+                vidas--;
+                perder(mal);
+                salida = false;
+                rest(100);
+            }
+
+
+         }else  if ( mouse_x > 534 && mouse_x < 613 &&
+              mouse_y > 453 && mouse_y < 505)
+         {
+            blit(fondo1, buffer, 0, 0, 0, 0, 800, 621);
+            textprintf_ex(fondo1, op, 534, 446, makecol(255,255,128), -1, "x=3");
+            if ( mouse_b & 1 )
+            {
+                    perder(mal);
+                   vidas--;
+                  salida = false;
+                  rest(70);
+
+            }
+
+
+         }
+
+         else{
+            blit(fondo1, buffer, 0, 0, 0, 0, 800, 621);
+         }
+            textprintf_ex(buffer, sim, 70, 555, makecol(255,255,255), -1, "Nivel :   %d Vidas: %d",nivel,vidas);
+            textprintf_ex(buffer, cali, 150, 153, makecol(255,255,255), -1, "Calificacion: %d",cal);
+            textprintf_ex(fondo1, op, 334, 265, makecol(255,255,255), -1, "4x+5=25");
+            textprintf_ex(fondo1, op, 250, 446, makecol(255,255,255), -1, "x=5");
+            textprintf_ex(fondo1, op, 387, 446, makecol(255,255,255), -1, "x=2");
+            textprintf_ex(fondo1, op, 534, 446, makecol(255,255,255), -1, "x=3");
+
+         masked_blit(cursor, buffer, 0, 0, mouse_x, mouse_y, 46,48);
+
+	     blit(buffer, screen, 0, 0, 0, 0, 800, 621);
+
+
+    }
+
+       salida=false;
+       destroy_bitmap(fondo1);
+
+       feliz = load_bitmap ("felicidad.bmp",NULL);
+
+while ( !salida )
+	{
+         if ( mouse_x > 0 && mouse_x < 800 &&
+              mouse_y > 0 && mouse_y < 621)
+         {
+            blit(feliz, buffer, 0, 0, 0, 0, 800, 621);
+
+            if ( mouse_b & 1 )
+            {
+                  salida = true;
+
+            }
+         }else{
+            blit(feliz, buffer, 0, 0, 0, 0, 800, 621);
+         }
+
+         masked_blit(cursor, buffer, 0, 0, mouse_x, mouse_y, 46,48);
+
+	     blit(buffer, screen, 0, 0, 0, 0, 800, 621);
+
+
+
+    }
+        salida=false;
+       destroy_bitmap(feliz);
+       ganar = load_bitmap ("ganar.bmp",NULL);
+       blit(ganar, buffer, 0, 0, 0, 0, 800, 621);
+       textprintf_ex(ganar, cali, 120, 352, makecol(255,255,255), -1, "&d",cal);
+
+
+}
+
+else if (nivel==2)
+{
+    textprintf_ex(ganar, cali, 120, 352, makecol(255,255,255), -1, "%d",cal);
+}
+
+
+}
+
+
+
+END_OF_MAIN();
